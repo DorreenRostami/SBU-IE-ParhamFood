@@ -59,8 +59,7 @@ func GetProfilesFromFile() Profiles {
 	return profiles
 }
 
-func AddProfileToFile(profiles Profiles, p Profile) {
-	profiles.Profiles = append(profiles.Profiles, p)
+func UpdateProfileFile(profiles Profiles) {
 	file, _ := json.MarshalIndent(profiles, "", " ")
 	_ = ioutil.WriteFile("resources/profiles.json", file, 0644)
 }
