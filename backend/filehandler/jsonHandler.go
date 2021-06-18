@@ -47,11 +47,6 @@ type Review struct {
 	Reply    string `json:"reply"`
 }
 
-type LoginInfo struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 func GetProfilesFromFile() Profiles {
 	jsonFile, err := os.Open("resources/profiles.json")
 	if err != nil {

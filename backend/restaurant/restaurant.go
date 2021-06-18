@@ -13,12 +13,29 @@ type ResponseMessage struct {
 	Message    string `json:"message"`
 }
 
-func equalsRestaurant(p1 fh.Profile, p2 fh.Profile) bool {
+type LoginInfo struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type SignupInfo struct {
+	Email     string  `json:"email"`
+	Password  string  `json:"password"`
+	Name      string  `json:"name"`
+	District  string  `json:"district"`
+	Address   string  `json:"address"`
+	Open      int     `json:"open"`
+	Close     int     `json:"close"`
+	FixedCost float64 `json:"fixed_cost"`
+	FixedTime float64 `json:"fixed_time"`
+}
+
+func equalsRestaurant(p1 fh.Profile, p2 SignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
 func LoginAdmin(c echo.Context) error {
-	var loginInfo fh.LoginInfo
+	var loginInfo LoginInfo
 	if err := c.Bind(&loginInfo); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -34,7 +51,7 @@ func LoginAdmin(c echo.Context) error {
 }
 
 func SignUpAdmin(c echo.Context) error {
-	var signupInfo fh.Profile
+	var signupInfo SignupInfo
 	if err := c.Bind(&signupInfo); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -57,11 +74,11 @@ func SignUpAdmin(c echo.Context) error {
 		Name:      signupInfo.Name,
 		District:  signupInfo.District,
 		Address:   signupInfo.Address,
-		Open:      0,
-		Close:     0,
+		Open:      signupInfo.Open,
+		Close:     signupInfo.Close,
 		Dishes:    []fh.Dish{},
-		FixedCost: 0,
-		FixedTime: 0,
+		FixedCost: signupInfo.FixedCost,
+		FixedTime: signupInfo.FixedTime,
 		Orders:    []fh.Order{},
 		Reviews:   []fh.Review{},
 	}
