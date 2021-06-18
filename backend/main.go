@@ -1,9 +1,9 @@
 package main
 
 import (
+	rst "github.com/DorreenRostami/IE_ParhamFood/restaurant"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	rst "github.com/DorreenRostami/IE_ParhamFood/restaurant"
 )
 
 // var upgrader = websocket.Upgrader{
@@ -57,8 +57,8 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	//e.Static("/", "../src")
-	e.GET("/loginadmin", rst.LoginAdmin)
-	e.GET("/signupadmin", rst.SignUpAdmin)
+	e.POST("/loginadmin", rst.LoginAdmin)
+	e.POST("/signupadmin", rst.SignUpAdmin)
 	e.Logger.Fatal(e.Start(":1323"))
 
 }
