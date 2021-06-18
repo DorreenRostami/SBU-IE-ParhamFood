@@ -12,32 +12,32 @@ type Profiles struct {
 }
 
 type Profile struct {
-	Email     string   `json:"email"`
-	Password  string   `json:"password"`
-	ID        int      `json:"id"`
-	Name      string   `json:"name"`
-	District  string   `json:"district"`
-	Address   string   `json:"address"`
-	Open      int      `json:"open"`
-	Close     int      `json:"close"`
-	Dishes    []Dish   `json:"dishes"`
-	FixedCost float64  `json:"fixed_cost"`
-	FixedTime float64  `json:"fixed_time"`
-	Orders    []Order  `json:"orders"`
-	Reviews   []Review `json:"review"`
+	Email       string   `json:"email"`
+	Password    string   `json:"password"`
+	ID          int      `json:"id"`
+	Name        string   `json:"name"`
+	District    string   `json:"district"`
+	Address     string   `json:"address"`
+	Open        int      `json:"open"`
+	Close       int      `json:"close"`
+	Dishes      []Dish   `json:"dishes"`
+	FixedCost   int      `json:"fixed_cost"`
+	FixedMinute int      `json:"fixed_minute"`
+	Orders      []Order  `json:"orders"`
+	Reviews     []Review `json:"review"`
 }
 
 type Dish struct {
-	Name      string  `json:"name"`
-	Price     float64 `json:"price"`
-	Available bool    `json:"available"`
+	Name      string `json:"name"`
+	Price     int    `json:"price"`
+	Available bool   `json:"available"`
 }
 
 type Order struct {
-	Customer  string  `json:"customer"`
-	Dishes    []Dish  `json:"dishes"`
-	Price     float64 `json:"price"`
-	Confirmed bool    `json:"confirmed"`
+	Customer  string `json:"customer"`
+	Dishes    []Dish `json:"dishes"`
+	Price     int    `json:"price"`
+	Confirmed bool   `json:"confirmed"`
 }
 
 type Review struct {

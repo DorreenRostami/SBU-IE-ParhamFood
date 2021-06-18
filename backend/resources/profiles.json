@@ -11,7 +11,7 @@
    "close": 23,
    "dishes": [],
    "fixed_cost": 0,
-   "fixed_time": 0,
+   "fixed_minute": 0,
    "orders": [],
    "review": []
   },
@@ -24,9 +24,20 @@
    "address": "bla bla bla",
    "open": 11,
    "close": 23,
-   "dishes": [],
+   "dishes": [
+    {
+     "name": "hamburger",
+     "price": 100,
+     "available": true
+    },
+    {
+     "name": "cheeseburger",
+     "price": 10,
+     "available": true
+    }
+   ],
    "fixed_cost": 0,
-   "fixed_time": 0,
+   "fixed_minute": 0,
    "orders": [],
    "review": []
   },
@@ -41,7 +52,7 @@
    "close": 23,
    "dishes": [],
    "fixed_cost": 0,
-   "fixed_time": 0,
+   "fixed_minute": 0,
    "orders": [],
    "review": []
   },
@@ -56,7 +67,7 @@
    "close": 0,
    "dishes": [],
    "fixed_cost": 0,
-   "fixed_time": 0,
+   "fixed_minute": 0,
    "orders": [],
    "review": []
   }

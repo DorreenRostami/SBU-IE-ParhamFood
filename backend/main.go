@@ -60,6 +60,7 @@ func main() {
 	e.POST("/loginadmin", rst.LoginAdmin)
 	e.POST("/signupadmin", rst.SignUpAdmin)
 	e.POST("/adddish", rst.AddDish)
+	e.POST("/deletedish", rst.DeleteDish)
 	e.Logger.Fatal(e.Start(":1323"))
 
 }

@@ -19,21 +19,21 @@ type LoginInfo struct {
 }
 
 type SignupInfo struct {
-	Email     string  `json:"email"`
-	Password  string  `json:"password"`
-	Name      string  `json:"name"`
-	District  string  `json:"district"`
-	Address   string  `json:"address"`
-	Open      int     `json:"open"`
-	Close     int     `json:"close"`
-	FixedCost float64 `json:"fixed_cost"`
-	FixedTime float64 `json:"fixed_time"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	Name        string `json:"name"`
+	District    string `json:"district"`
+	Address     string `json:"address"`
+	Open        int    `json:"open"`
+	Close       int    `json:"close"`
+	FixedCost   int    `json:"fixed_cost"`
+	FixedMinute int    `json:"fixed_minute"`
 }
 
 type DishReq struct {
-	RestaurantID int     `json:"restaurant_id"`
-	Name         string  `json:"name"`
-	Price        float64 `json:"price"`
+	RestaurantID int    `json:"restaurant_id"`
+	Name         string `json:"name"`
+	Price        int    `json:"price"`
 }
 
 func equalsRestaurant(p1 fh.Profile, p2 SignupInfo) bool {
@@ -83,19 +83,19 @@ func SignUpAdmin(c echo.Context) error {
 	}
 
 	newProfile := fh.Profile{
-		Email:     signupInfo.Email,
-		Password:  signupInfo.Password,
-		ID:        len(profiles.Profiles),
-		Name:      signupInfo.Name,
-		District:  signupInfo.District,
-		Address:   signupInfo.Address,
-		Open:      signupInfo.Open,
-		Close:     signupInfo.Close,
-		Dishes:    []fh.Dish{},
-		FixedCost: signupInfo.FixedCost,
-		FixedTime: signupInfo.FixedTime,
-		Orders:    []fh.Order{},
-		Reviews:   []fh.Review{},
+		Email:       signupInfo.Email,
+		Password:    signupInfo.Password,
+		ID:          len(profiles.Profiles),
+		Name:        signupInfo.Name,
+		District:    signupInfo.District,
+		Address:     signupInfo.Address,
+		Open:        signupInfo.Open,
+		Close:       signupInfo.Close,
+		Dishes:      []fh.Dish{},
+		FixedCost:   signupInfo.FixedCost,
+		FixedMinute: signupInfo.FixedMinute,
+		Orders:      []fh.Order{},
+		Reviews:     []fh.Review{},
 	}
 	profiles.Profiles = append(profiles.Profiles, newProfile)
 	fh.UpdateProfileFile(profiles)
@@ -112,11 +112,11 @@ func getRestDishes(id int) []fh.Dish {
 	return nil
 }
 
-func updateDishes(id int, d fh.Dish) {
+func updateDishes(id int, d []fh.Dish) {
 	profiles := fh.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id {
-			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, d)
+			profiles.Profiles[i].Dishes = d
 			break
 		}
 	}
@@ -144,16 +144,43 @@ func AddDish(c echo.Context) error {
 		Price:     dish.Price,
 		Available: true,
 	}
-	updateDishes(dish.RestaurantID, newDish)
+
+	profiles := fh.GetProfilesFromFile()
+	for i := 0; i < len(profiles.Profiles); i++ {
+		if profiles.Profiles[i].ID == dish.RestaurantID {
+			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, newDish)
+			break
+		}
+	}
+	fh.UpdateProfileFile(profiles)
 
 	// var dddd fh.Profile
-	// profiles := fh.GetProfilesFromFile()
-	// for i := 0; i < len(profiles.Profiles); i++ {
-	// 	if profiles.Profiles[i].ID == dish.RestaurantID {
-	// 		dddd = profiles.Profiles[i]
+	// pfs := fh.GetProfilesFromFile()
+	// for i := 0; i < len(pfs.Profiles); i++ {
+	// 	if pfs.Profiles[i].ID == dish.RestaurantID {
+	// 		dddd = pfs.Profiles[i]
 	// 		break
 	// 	}
 	// }
 
 	return c.JSON(http.StatusOK, newDish)
+}
+
+func DeleteDish(c echo.Context) error {
+	var dish DishReq
+	if err := c.Bind(&dish); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	dishes := getRestDishes(dish.RestaurantID)
+	for i := 0; i < len(dishes); i++ {
+		if dishes[i].Name == dish.Name {
+			dishes = append(dishes[:i], dishes[i+1:]...)
+			break
+		}
+	}
+
+	updateDishes(dish.RestaurantID, dishes)
+
+	return c.JSON(http.StatusOK, nil)
 }
