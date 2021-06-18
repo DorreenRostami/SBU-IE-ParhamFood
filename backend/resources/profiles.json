@@ -26,8 +26,8 @@
    "close": 23,
    "dishes": [
     {
-     "name": "hamburger",
-     "price": 100,
+     "name": "hammburger",
+     "price": 200,
      "available": true
     },
     {

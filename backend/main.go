@@ -59,8 +59,17 @@ func main() {
 	//e.Static("/", "../src")
 	e.POST("/loginadmin", rst.LoginAdmin)
 	e.POST("/signupadmin", rst.SignUpAdmin)
+
+	e.POST("/getmenu", rst.GetMenu)
+	e.POST("/getorders", rst.GetOrders)
+	e.POST("/getreviews", rst.GetReviews)
+	e.POST("/getinfo", rst.GetInfo)
+
 	e.POST("/adddish", rst.AddDish)
 	e.POST("/deletedish", rst.DeleteDish)
+	e.POST("/updatedishpa", rst.UpdateDishPA)
+	e.POST("/updatedishname", rst.UpdateDishName)
+
 	e.Logger.Fatal(e.Start(":1323"))
 
 }

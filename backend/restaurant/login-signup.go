@@ -30,12 +30,6 @@ type SignupInfo struct {
 	FixedMinute int    `json:"fixed_minute"`
 }
 
-type DishReq struct {
-	RestaurantID int    `json:"restaurant_id"`
-	Name         string `json:"name"`
-	Price        int    `json:"price"`
-}
-
 func equalsRestaurant(p1 fh.Profile, p2 SignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
@@ -49,8 +43,9 @@ func LoginAdmin(c echo.Context) error {
 	profiles := fh.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == loginInfo.Email && profiles.Profiles[i].Password == loginInfo.Password {
-			response := profiles.Profiles[i]
-			return c.JSON(http.StatusOK, response)
+			return c.JSON(http.StatusOK, RestID{
+				ID: profiles.Profiles[i].ID,
+			})
 		}
 	}
 	return c.JSON(http.StatusUnauthorized, ResponseMessage{
@@ -99,88 +94,7 @@ func SignUpAdmin(c echo.Context) error {
 	}
 	profiles.Profiles = append(profiles.Profiles, newProfile)
 	fh.UpdateProfileFile(profiles)
-	return c.JSON(http.StatusOK, newProfile)
-}
-
-func getRestDishes(id int) []fh.Dish {
-	profiles := fh.GetProfilesFromFile()
-	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == id {
-			return profiles.Profiles[i].Dishes
-		}
-	}
-	return nil
-}
-
-func updateDishes(id int, d []fh.Dish) {
-	profiles := fh.GetProfilesFromFile()
-	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == id {
-			profiles.Profiles[i].Dishes = d
-			break
-		}
-	}
-	fh.UpdateProfileFile(profiles)
-}
-
-func AddDish(c echo.Context) error {
-	var dish DishReq
-	if err := c.Bind(&dish); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	dishes := getRestDishes(dish.RestaurantID)
-	for i := 0; i < len(dishes); i++ {
-		if dishes[i].Name == dish.Name {
-			return c.JSON(http.StatusConflict, ResponseMessage{
-				StatusCode: http.StatusConflict,
-				Message:    "A dish with this name already exists.",
-			})
-		}
-	}
-
-	newDish := fh.Dish{
-		Name:      dish.Name,
-		Price:     dish.Price,
-		Available: true,
-	}
-
-	profiles := fh.GetProfilesFromFile()
-	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == dish.RestaurantID {
-			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, newDish)
-			break
-		}
-	}
-	fh.UpdateProfileFile(profiles)
-
-	// var dddd fh.Profile
-	// pfs := fh.GetProfilesFromFile()
-	// for i := 0; i < len(pfs.Profiles); i++ {
-	// 	if pfs.Profiles[i].ID == dish.RestaurantID {
-	// 		dddd = pfs.Profiles[i]
-	// 		break
-	// 	}
-	// }
-
-	return c.JSON(http.StatusOK, newDish)
-}
-
-func DeleteDish(c echo.Context) error {
-	var dish DishReq
-	if err := c.Bind(&dish); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	dishes := getRestDishes(dish.RestaurantID)
-	for i := 0; i < len(dishes); i++ {
-		if dishes[i].Name == dish.Name {
-			dishes = append(dishes[:i], dishes[i+1:]...)
-			break
-		}
-	}
-
-	updateDishes(dish.RestaurantID, dishes)
-
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusOK, RestID{
+		ID: newProfile.ID,
+	})
 }
