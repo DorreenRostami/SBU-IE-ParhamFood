@@ -1,1 +1,5 @@
-/IE Spring 2021 Final Project.pdf
+*.pdf
+*.mod
+*.sum
+*.exe
+*.json
