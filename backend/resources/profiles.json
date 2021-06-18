@@ -1,0 +1,64 @@
+{
+ "profiles": [
+  {
+   "email": "admin0@gmail.com",
+   "password": "1234",
+   "id": 0,
+   "name": "sib0",
+   "district": "3",
+   "address": "bla bla bla",
+   "open": 11,
+   "close": 23,
+   "dishes": [],
+   "fixed_cost": 0,
+   "fixed_time": 0,
+   "orders": [],
+   "review": []
+  },
+  {
+   "email": "admin1@gmail.com",
+   "password": "1234",
+   "id": 1,
+   "name": "sib1",
+   "district": "3",
+   "address": "bla bla bla",
+   "open": 11,
+   "close": 23,
+   "dishes": [],
+   "fixed_cost": 0,
+   "fixed_time": 0,
+   "orders": [],
+   "review": []
+  },
+  {
+   "email": "admin2@gmail.com",
+   "password": "1234",
+   "id": 2,
+   "name": "sib2",
+   "district": "3",
+   "address": "bla bla bla",
+   "open": 11,
+   "close": 23,
+   "dishes": [],
+   "fixed_cost": 0,
+   "fixed_time": 0,
+   "orders": [],
+   "review": []
+  },
+  {
+   "email": "hello@gmail.com",
+   "password": "1234",
+   "id": 3,
+   "name": "",
+   "district": "",
+   "address": "",
+   "open": 0,
+   "close": 0,
+   "dishes": [],
+   "fixed_cost": 0,
+   "fixed_time": 0,
+   "orders": [],
+   "review": []
+  }
+ ]
+}
