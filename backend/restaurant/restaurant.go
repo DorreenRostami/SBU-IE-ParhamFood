@@ -30,6 +30,12 @@ type SignupInfo struct {
 	FixedTime float64 `json:"fixed_time"`
 }
 
+type DishReq struct {
+	RestaurantID int     `json:"restaurant_id"`
+	Name         string  `json:"name"`
+	Price        float64 `json:"price"`
+}
+
 func equalsRestaurant(p1 fh.Profile, p2 SignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
@@ -47,7 +53,10 @@ func LoginAdmin(c echo.Context) error {
 			return c.JSON(http.StatusOK, response)
 		}
 	}
-	return c.JSON(http.StatusUnauthorized, ResponseMessage{StatusCode: http.StatusUnauthorized, Message: "Wrong username or password."})
+	return c.JSON(http.StatusUnauthorized, ResponseMessage{
+		StatusCode: http.StatusUnauthorized,
+		Message:    "Wrong username or password.",
+	})
 }
 
 func SignUpAdmin(c echo.Context) error {
@@ -60,10 +69,16 @@ func SignUpAdmin(c echo.Context) error {
 
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == signupInfo.Email {
-			return c.JSON(http.StatusConflict, ResponseMessage{StatusCode: http.StatusConflict, Message: "This email has already been used."})
+			return c.JSON(http.StatusConflict, ResponseMessage{
+				StatusCode: http.StatusConflict,
+				Message:    "This email has already been used.",
+			})
 		}
 		if equalsRestaurant(profiles.Profiles[i], signupInfo) {
-			return c.JSON(http.StatusConflict, ResponseMessage{StatusCode: http.StatusConflict, Message: "This restaurant already exists."})
+			return c.JSON(http.StatusConflict, ResponseMessage{
+				StatusCode: http.StatusConflict,
+				Message:    "This restaurant already exists.",
+			})
 		}
 	}
 
@@ -82,6 +97,63 @@ func SignUpAdmin(c echo.Context) error {
 		Orders:    []fh.Order{},
 		Reviews:   []fh.Review{},
 	}
-	fh.AddProfileToFile(profiles, newProfile)
+	profiles.Profiles = append(profiles.Profiles, newProfile)
+	fh.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, newProfile)
+}
+
+func getRestDishes(id int) []fh.Dish {
+	profiles := fh.GetProfilesFromFile()
+	for i := 0; i < len(profiles.Profiles); i++ {
+		if profiles.Profiles[i].ID == id {
+			return profiles.Profiles[i].Dishes
+		}
+	}
+	return nil
+}
+
+func updateDishes(id int, d fh.Dish) {
+	profiles := fh.GetProfilesFromFile()
+	for i := 0; i < len(profiles.Profiles); i++ {
+		if profiles.Profiles[i].ID == id {
+			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, d)
+			break
+		}
+	}
+	fh.UpdateProfileFile(profiles)
+}
+
+func AddDish(c echo.Context) error {
+	var dish DishReq
+	if err := c.Bind(&dish); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	dishes := getRestDishes(dish.RestaurantID)
+	for i := 0; i < len(dishes); i++ {
+		if dishes[i].Name == dish.Name {
+			return c.JSON(http.StatusConflict, ResponseMessage{
+				StatusCode: http.StatusConflict,
+				Message:    "A dish with this name already exists.",
+			})
+		}
+	}
+
+	newDish := fh.Dish{
+		Name:      dish.Name,
+		Price:     dish.Price,
+		Available: true,
+	}
+	updateDishes(dish.RestaurantID, newDish)
+
+	// var dddd fh.Profile
+	// profiles := fh.GetProfilesFromFile()
+	// for i := 0; i < len(profiles.Profiles); i++ {
+	// 	if profiles.Profiles[i].ID == dish.RestaurantID {
+	// 		dddd = profiles.Profiles[i]
+	// 		break
+	// 	}
+	// }
+
+	return c.JSON(http.StatusOK, newDish)
 }

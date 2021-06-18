@@ -28,9 +28,9 @@ type Profile struct {
 }
 
 type Dish struct {
-	Name      string `json:"name"`
-	Price     string `json:"price"`
-	Available bool   `json:"available"`
+	Name      string  `json:"name"`
+	Price     float64 `json:"price"`
+	Available bool    `json:"available"`
 }
 
 type Order struct {
