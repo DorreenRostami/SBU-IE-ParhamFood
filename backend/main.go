@@ -92,6 +92,8 @@ func main() {
 	e.POST("/updatedishname", rst.UpdateDishName)
 
 	e.POST("/changeorderstatus", rst.ChangeOrderStatus)
+	e.POST("/postreply", rst.PostReply)
+	e.POST("/updateinfo", rst.UpdateInfo)
 
 	e.Logger.Fatal(e.Start(":1323"))
 
