@@ -13,7 +13,7 @@ func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == rev.RestaurantID {
 			reviews := profiles.Profiles[i].Reviews
@@ -39,6 +39,6 @@ func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 			})
 		}
 	}
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 	return c.JSON(http.StatusOK, rev)
 }

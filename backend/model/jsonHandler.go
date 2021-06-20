@@ -57,8 +57,22 @@ type Review struct {
 	Reply        string `json:"reply"`
 }
 
-func GetProfilesFromFile() RestaurantProfiles {
-	jsonFile, err := os.Open("model/profiles.json")
+type CustomerProfiles struct {
+	Profiles []CustomerProfile `json:"profiles"`
+}
+
+type CustomerProfile struct {
+	Mobile   string `json:"mobile"`
+	Password string `json:"password"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	District string `json:"district"`
+	Address  string `json:"address"`
+	Balance  int    `json:"balance"`
+}
+
+func GetRestaurantProfilesFromFile() RestaurantProfiles {
+	jsonFile, err := os.Open("model/RestaurantProfiles.json")
 	if err != nil {
 		log.Println(err)
 	}
@@ -69,7 +83,24 @@ func GetProfilesFromFile() RestaurantProfiles {
 	return profiles
 }
 
-func UpdateProfileFile(profiles RestaurantProfiles) {
+func UpdateRestaurantProfileFile(profiles RestaurantProfiles) {
 	file, _ := json.MarshalIndent(profiles, "", " ")
-	_ = ioutil.WriteFile("model/profiles.json", file, 0644)
+	_ = ioutil.WriteFile("model/RestaurantProfiles.json", file, 0644)
+}
+
+func GetCustomerProfilesFromFile() CustomerProfiles {
+	jsonFile, err := os.Open("model/CustomerProfiles.json")
+	if err != nil {
+		log.Println(err)
+	}
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	defer jsonFile.Close()
+	var profiles CustomerProfiles
+	json.Unmarshal(byteValue, &profiles)
+	return profiles
+}
+
+func UpdateCustomerProfileFile(profiles CustomerProfiles) {
+	file, _ := json.MarshalIndent(profiles, "", " ")
+	_ = ioutil.WriteFile("model/CustomerProfiles.json", file, 0644)
 }

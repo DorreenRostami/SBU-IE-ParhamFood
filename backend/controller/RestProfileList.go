@@ -50,7 +50,7 @@ func GetOrders(c echo.Context) error {
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	var orders []model.Order
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {
@@ -68,7 +68,7 @@ func GetReviews(c echo.Context) error {
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	var rev []model.Review
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {
@@ -81,12 +81,12 @@ func GetReviews(c echo.Context) error {
 	})
 }
 
-func GetInfo(c echo.Context) error {
+func GetRestaurantInfo(c echo.Context) error {
 	var id RestID
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	var info RestInfo
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {

@@ -58,6 +58,21 @@ func main() {
 		fmt.Println("restaurant name: " + profiles.Profiles[i].Name)
 	}*/
 
+	/*var data model.CustomerProfiles
+	for i := 0; i < 1; i++ {
+		data.Profiles = append(data.Profiles, model.CustomerProfile{
+			Mobile:   "09121234567",
+			Password: "1234",
+			ID:       i,
+			Name:     "ali",
+			District: "blaa",
+			Address:  "bla bla",
+			Balance:  1000000,
+		})
+	}
+	file, _ := json.MarshalIndent(data, "", " ")
+	_ = ioutil.WriteFile("model/CustomerProfiles.json", file, 0644)*/
+
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -66,13 +81,14 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	//e.Static("/", "../src")
+	
 	e.POST("/loginadmin", cont.LoginAdmin)
 	e.POST("/signupadmin", cont.SignUpAdmin)
 
 	e.POST("/getmenu", cont.GetMenu)
 	e.POST("/getorders", cont.GetOrders)
 	e.POST("/getreviews", cont.GetReviews)
-	e.POST("/getinfo", cont.GetInfo)
+	e.POST("/getrestaurantinfo", cont.GetRestaurantInfo)
 
 	e.POST("/adddish", cont.AddDish)
 	e.POST("/deletedish", cont.DeleteDish)
@@ -81,9 +97,17 @@ func main() {
 
 	e.POST("/changeorderstatus", cont.ChangeOrderStatus)
 	e.POST("/postreply", cont.PostReply)
-	e.POST("/updateinfo", cont.UpdateInfo)
+	e.POST("/updaterestaurantinfo", cont.UpdateRestaurantInfo)
 
-	e.GET("/getallrestaurants", cont.GetAllRestaurants)
+	// ----------------------------------------------------------
+
+	e.POST("/logincustomer", cont.LoginCustomer)
+	e.POST("/signupcustomer", cont.SignUpCustomer)
+
+	e.POST("/getcustomerinfo", cont.GetCustomerInfo)
+	e.GET("/homepage", cont.GetAllRestaurants)
+
+	e.POST("/updatecustomerinfo", cont.UpdateCustomerInfo)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

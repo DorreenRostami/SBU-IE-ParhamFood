@@ -22,7 +22,7 @@ type DishNameReq struct {
 }
 
 func getDishes(id int) []model.Dish {
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id {
 			return profiles.Profiles[i].Dishes
@@ -32,14 +32,14 @@ func getDishes(id int) []model.Dish {
 }
 
 func updateDishes(id int, d []model.Dish) {
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id {
 			profiles.Profiles[i].Dishes = d
 			break
 		}
 	}
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 }
 
 func AddDish(c echo.Context) error {
@@ -64,14 +64,14 @@ func AddDish(c echo.Context) error {
 		Available: dish.Available,
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == dish.RestaurantID {
 			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, newDish)
 			break
 		}
 	}
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 	return c.JSON(http.StatusOK, newDish)
 }
 

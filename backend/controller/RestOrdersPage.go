@@ -13,7 +13,7 @@ func ChangeOrderStatus(c echo.Context) error { //needs restaurant_id, order_id
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == order.RestaurantID {
 			orders := profiles.Profiles[i].Orders
@@ -39,6 +39,6 @@ func ChangeOrderStatus(c echo.Context) error { //needs restaurant_id, order_id
 			})
 		}
 	}
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 	return c.JSON(http.StatusOK, order)
 }

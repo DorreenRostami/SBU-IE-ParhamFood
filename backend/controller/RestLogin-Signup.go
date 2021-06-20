@@ -13,12 +13,12 @@ type ResponseMessage struct {
 	Message    string `json:"message"`
 }
 
-type LoginInfo struct {
+type AdminLoginInfo struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type SignupInfo struct {
+type AdminSignupInfo struct {
 	Email       string `json:"email"`
 	Password    string `json:"password"`
 	Name        string `json:"name"`
@@ -30,17 +30,17 @@ type SignupInfo struct {
 	FixedMinute int    `json:"fixed_minute"`
 }
 
-func equalsRestaurant(p1 model.RestaurantProfile, p2 SignupInfo) bool {
+func equalsRestaurant(p1 model.RestaurantProfile, p2 AdminSignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
 func LoginAdmin(c echo.Context) error {
-	var loginInfo LoginInfo
+	var loginInfo AdminLoginInfo
 	if err := c.Bind(&loginInfo); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == loginInfo.Email && profiles.Profiles[i].Password == loginInfo.Password {
 			return c.JSON(http.StatusOK, RestID{
@@ -55,12 +55,12 @@ func LoginAdmin(c echo.Context) error {
 }
 
 func SignUpAdmin(c echo.Context) error {
-	var signupInfo SignupInfo
+	var signupInfo AdminSignupInfo
 	if err := c.Bind(&signupInfo); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == signupInfo.Email {
@@ -93,7 +93,7 @@ func SignUpAdmin(c echo.Context) error {
 		Reviews:     []model.Review{},
 	}
 	profiles.Profiles = append(profiles.Profiles, newProfile)
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 	return c.JSON(http.StatusOK, RestID{
 		RID: newProfile.ID,
 	})

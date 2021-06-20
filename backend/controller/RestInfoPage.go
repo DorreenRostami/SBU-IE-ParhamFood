@@ -16,13 +16,13 @@ func restaurantExists(p1 model.RestaurantProfile, p2 RestInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
-func UpdateInfo(c echo.Context) error { //needs every info field
+func UpdateRestaurantInfo(c echo.Context) error { //needs every info field
 	var info RestInfoReq
 	if err := c.Bind(&info); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := model.GetProfilesFromFile()
+	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == info.RID {
 			for j := 0; j < len(profiles.Profiles); j++ {
@@ -66,6 +66,6 @@ func UpdateInfo(c echo.Context) error { //needs every info field
 			})
 		}
 	}
-	model.UpdateProfileFile(profiles)
+	model.UpdateRestaurantProfileFile(profiles)
 	return c.JSON(http.StatusOK, info)
 }
