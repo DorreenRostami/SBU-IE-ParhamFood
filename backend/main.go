@@ -13,29 +13,50 @@ import (
 // }
 
 func main() {
-	/*var data Profiles
-	for i := 0; i < 3; i++ {
+	/*var data fh.RestaurantProfiles
+	for i := 0; i < 2; i++ {
 		v := strconv.Itoa(i)
-		data.Profiles = append(data.Profiles, Profile{
-			Email:     "admin" + v + "@gmail.com",
-			Password:  "1234",
-			ID:        i,
-			Name:      "sib" + v,
-			District:  "3",
-			Address:   "bla bla bla",
-			Open:      11,
-			Close:     23,
-			Dishes:    []Dish{},
-			FixedCost: 0,
-			FixedTime: 0,
-			Orders:    []Order{},
-			Reviews:   []Review{},
+		data.Profiles = append(data.Profiles, fh.RestaurantProfile{
+			Email:    "admin" + v + "@gmail.com",
+			Password: "1234",
+			ID:       i,
+			Name:     "sib" + v,
+			District: "blaa",
+			Address:  "bla bla bla",
+			Open:     11,
+			Close:    23,
+			Dishes: []fh.Dish{
+				{
+					Name:      "ham",
+					Price:     10,
+					Available: true,
+				},
+			},
+			FixedCost:   0,
+			FixedMinute: 0,
+			Orders: []fh.Order{
+				{
+					OrderID:      0,
+					CustomerID:   0,
+					RestaurantID: i,
+					DisheInfos: []fh.DishInfo{
+						{
+							Name:     "ham",
+							Price:    10,
+							Quantity: 1,
+						},
+					},
+					Price:     10,
+					Status: 0
+				},
+			},
+			Reviews: []fh.Review{},
 		})
 	}
 	file, _ := json.MarshalIndent(data, "", " ")
-	_ = ioutil.WriteFile("profiles.json", file, 0644)
+	_ = ioutil.WriteFile("resources/profiles.json", file, 0644)*/
 
-	jsonFile, err := os.Open("profiles.json")
+	/*jsonFile, err := os.Open("profiles.json")
 	if err != nil {
 		log.Println(err)
 	}
@@ -69,6 +90,8 @@ func main() {
 	e.POST("/deletedish", rst.DeleteDish)
 	e.POST("/updatedishpa", rst.UpdateDishPA)
 	e.POST("/updatedishname", rst.UpdateDishName)
+
+	e.POST("/changeorderstatus", rst.ChangeOrderStatus)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

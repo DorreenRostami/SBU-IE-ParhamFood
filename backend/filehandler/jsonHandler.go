@@ -7,11 +7,11 @@ import (
 	"os"
 )
 
-type Profiles struct {
-	Profiles []Profile `json:"profiles"`
+type RestaurantProfiles struct {
+	Profiles []RestaurantProfile `json:"profiles"`
 }
 
-type Profile struct {
+type RestaurantProfile struct {
 	Email       string   `json:"email"`
 	Password    string   `json:"password"`
 	ID          int      `json:"id"`
@@ -33,33 +33,43 @@ type Dish struct {
 	Available bool   `json:"available"`
 }
 
+type DishInfo struct {
+	Name     string `json:"name"`
+	Price    int    `json:"price"`
+	Quantity int    `json:"quantity"`
+}
+
 type Order struct {
-	Customer  string `json:"customer"`
-	Dishes    []Dish `json:"dishes"`
-	Price     int    `json:"price"`
-	Confirmed bool   `json:"confirmed"`
+	OrderID      int        `json:"order_id"`
+	CustomerID   int        `json:"customer_id"`
+	RestaurantID int        `json:"restaurant_id"`
+	DisheInfos   []DishInfo `json:"dishes"`
+	Price        int        `json:"price"`
+	Status       int        `json:"status"`
 }
 
 type Review struct {
-	Customer string `json:"customer"`
-	Text     string `json:"text"`
-	Stars    int    `json:"stars"`
-	Reply    string `json:"reply"`
+	ReviewID     int    `json:"review_id"`
+	CustomerID   int    `json:"customer_id"`
+	RestaurantID int    `json:"restaurant_id"`
+	Text         string `json:"text"`
+	Stars        int    `json:"stars"`
+	Reply        string `json:"reply"`
 }
 
-func GetProfilesFromFile() Profiles {
+func GetProfilesFromFile() RestaurantProfiles {
 	jsonFile, err := os.Open("resources/profiles.json")
 	if err != nil {
 		log.Println(err)
 	}
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	defer jsonFile.Close()
-	var profiles Profiles
+	var profiles RestaurantProfiles
 	json.Unmarshal(byteValue, &profiles)
 	return profiles
 }
 
-func UpdateProfileFile(profiles Profiles) {
+func UpdateProfileFile(profiles RestaurantProfiles) {
 	file, _ := json.MarshalIndent(profiles, "", " ")
 	_ = ioutil.WriteFile("resources/profiles.json", file, 0644)
 }

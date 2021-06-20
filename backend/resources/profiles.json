@@ -5,14 +5,35 @@
    "password": "1234",
    "id": 0,
    "name": "sib0",
-   "district": "3",
+   "district": "blaa",
    "address": "bla bla bla",
    "open": 11,
    "close": 23,
-   "dishes": [],
+   "dishes": [
+    {
+     "name": "ham",
+     "price": 10,
+     "available": true
+    }
+   ],
    "fixed_cost": 0,
    "fixed_minute": 0,
-   "orders": [],
+   "orders": [
+    {
+     "order_id": 0,
+     "customer_id": 0,
+     "restaurant_id": 0,
+     "dishes": [
+      {
+       "name": "ham",
+       "price": 10,
+       "quantity": 1
+      }
+     ],
+     "price": 10,
+     "status": 0
+    }
+   ],
    "review": []
   },
   {
@@ -20,55 +41,35 @@
    "password": "1234",
    "id": 1,
    "name": "sib1",
-   "district": "3",
+   "district": "blaa",
    "address": "bla bla bla",
    "open": 11,
    "close": 23,
    "dishes": [
     {
-     "name": "hammburger",
-     "price": 200,
-     "available": true
-    },
-    {
-     "name": "cheeseburger",
+     "name": "ham",
      "price": 10,
      "available": true
     }
    ],
    "fixed_cost": 0,
    "fixed_minute": 0,
-   "orders": [],
-   "review": []
-  },
-  {
-   "email": "admin2@gmail.com",
-   "password": "1234",
-   "id": 2,
-   "name": "sib2",
-   "district": "3",
-   "address": "bla bla bla",
-   "open": 11,
-   "close": 23,
-   "dishes": [],
-   "fixed_cost": 0,
-   "fixed_minute": 0,
-   "orders": [],
-   "review": []
-  },
-  {
-   "email": "hello@gmail.com",
-   "password": "1234",
-   "id": 3,
-   "name": "",
-   "district": "",
-   "address": "",
-   "open": 0,
-   "close": 0,
-   "dishes": [],
-   "fixed_cost": 0,
-   "fixed_minute": 0,
-   "orders": [],
+   "orders": [
+    {
+     "order_id": 0,
+     "customer_id": 0,
+     "restaurant_id": 1,
+     "dishes": [
+      {
+       "name": "ham",
+       "price": 10,
+       "quantity": 1
+      }
+     ],
+     "price": 10,
+     "status": 1
+    }
+   ],
    "review": []
   }
  ]

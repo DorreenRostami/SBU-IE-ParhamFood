@@ -30,7 +30,7 @@ type SignupInfo struct {
 	FixedMinute int    `json:"fixed_minute"`
 }
 
-func equalsRestaurant(p1 fh.Profile, p2 SignupInfo) bool {
+func equalsRestaurant(p1 fh.RestaurantProfile, p2 SignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
@@ -44,7 +44,7 @@ func LoginAdmin(c echo.Context) error {
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == loginInfo.Email && profiles.Profiles[i].Password == loginInfo.Password {
 			return c.JSON(http.StatusOK, RestID{
-				ID: profiles.Profiles[i].ID,
+				RID: profiles.Profiles[i].ID,
 			})
 		}
 	}
@@ -77,7 +77,7 @@ func SignUpAdmin(c echo.Context) error {
 		}
 	}
 
-	newProfile := fh.Profile{
+	newProfile := fh.RestaurantProfile{
 		Email:       signupInfo.Email,
 		Password:    signupInfo.Password,
 		ID:          len(profiles.Profiles),
@@ -95,6 +95,6 @@ func SignUpAdmin(c echo.Context) error {
 	profiles.Profiles = append(profiles.Profiles, newProfile)
 	fh.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, RestID{
-		ID: newProfile.ID,
+		RID: newProfile.ID,
 	})
 }

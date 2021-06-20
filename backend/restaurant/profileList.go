@@ -20,7 +20,7 @@ type RestInfo struct {
 }
 
 type RestID struct {
-	ID int `json:"id"`
+	RID int `json:"restaurant_id"`
 }
 
 type Menu struct {
@@ -41,7 +41,7 @@ func GetMenu(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, Menu{
-		Dishes: getDishes(id.ID),
+		Dishes: getDishes(id.RID),
 	})
 }
 
@@ -53,7 +53,7 @@ func GetOrders(c echo.Context) error {
 	profiles := fh.GetProfilesFromFile()
 	var orders []fh.Order
 	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == id.ID {
+		if profiles.Profiles[i].ID == id.RID {
 			orders = profiles.Profiles[i].Orders
 			break
 		}
@@ -71,7 +71,7 @@ func GetReviews(c echo.Context) error {
 	profiles := fh.GetProfilesFromFile()
 	var rev []fh.Review
 	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == id.ID {
+		if profiles.Profiles[i].ID == id.RID {
 			rev = profiles.Profiles[i].Reviews
 			break
 		}
@@ -89,7 +89,7 @@ func GetInfo(c echo.Context) error {
 	profiles := fh.GetProfilesFromFile()
 	var info RestInfo
 	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == id.ID {
+		if profiles.Profiles[i].ID == id.RID {
 			info = RestInfo{
 				Email:       profiles.Profiles[i].Email,
 				Password:    profiles.Profiles[i].Password,
