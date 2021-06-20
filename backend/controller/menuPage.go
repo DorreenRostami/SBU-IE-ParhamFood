@@ -1,10 +1,10 @@
-package restaurant
+package controller
 
 import (
 	"fmt"
 	"net/http"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -21,8 +21,8 @@ type DishNameReq struct {
 	NewName      string `json:"new_name"`
 }
 
-func getDishes(id int) []fh.Dish {
-	profiles := fh.GetProfilesFromFile()
+func getDishes(id int) []model.Dish {
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id {
 			return profiles.Profiles[i].Dishes
@@ -31,15 +31,15 @@ func getDishes(id int) []fh.Dish {
 	return nil
 }
 
-func updateDishes(id int, d []fh.Dish) {
-	profiles := fh.GetProfilesFromFile()
+func updateDishes(id int, d []model.Dish) {
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id {
 			profiles.Profiles[i].Dishes = d
 			break
 		}
 	}
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 }
 
 func AddDish(c echo.Context) error {
@@ -58,20 +58,20 @@ func AddDish(c echo.Context) error {
 		}
 	}
 
-	newDish := fh.Dish{
+	newDish := model.Dish{
 		Name:      dish.Name,
 		Price:     dish.Price,
 		Available: dish.Available,
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == dish.RestaurantID {
 			profiles.Profiles[i].Dishes = append(profiles.Profiles[i].Dishes, newDish)
 			break
 		}
 	}
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, newDish)
 }
 
@@ -106,7 +106,7 @@ func UpdateDishPA(c echo.Context) error { //update dish price or availability
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	var updatedDish fh.Dish
+	var updatedDish model.Dish
 	dishes := getDishes(dish.RestaurantID)
 	for i := 0; i < len(dishes); i++ {
 		if dishes[i].Name == dish.Name {
@@ -137,7 +137,7 @@ func UpdateDishName(c echo.Context) error {
 	fmt.Println("hi")
 	fmt.Println(dish.NewName)
 
-	var updatedDish fh.Dish
+	var updatedDish model.Dish
 	dishes := getDishes(dish.RestaurantID)
 	for i := 0; i < len(dishes); i++ {
 		if dishes[i].Name == dish.NewName {

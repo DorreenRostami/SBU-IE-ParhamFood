@@ -1,9 +1,9 @@
-package restaurant
+package controller
 
 import (
 	"net/http"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,7 +12,7 @@ type RestInfoReq struct {
 	RestInfo RestInfo `json:"restaurant_info"`
 }
 
-func restaurantExists(p1 fh.RestaurantProfile, p2 RestInfo) bool {
+func restaurantExists(p1 model.RestaurantProfile, p2 RestInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
@@ -22,7 +22,7 @@ func UpdateInfo(c echo.Context) error { //needs every info field
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == info.RID {
 			for j := 0; j < len(profiles.Profiles); j++ {
@@ -42,7 +42,7 @@ func UpdateInfo(c echo.Context) error { //needs every info field
 					})
 				}
 			}
-			profiles.Profiles[i] = fh.RestaurantProfile{
+			profiles.Profiles[i] = model.RestaurantProfile{
 				Email:       info.RestInfo.Email,
 				Password:    info.RestInfo.Password,
 				ID:          info.RID,
@@ -66,6 +66,6 @@ func UpdateInfo(c echo.Context) error { //needs every info field
 			})
 		}
 	}
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, info)
 }

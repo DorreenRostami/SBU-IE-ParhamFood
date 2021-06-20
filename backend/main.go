@@ -1,22 +1,16 @@
 package main
 
 import (
-	rst "github.com/DorreenRostami/IE_ParhamFood/restaurant"
+	cont "github.com/DorreenRostami/IE_ParhamFood/controller"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-// var upgrader = websocket.Upgrader{
-// 	CheckOrigin: func(r *http.Request) bool {
-// 		return true
-// 	},
-// }
-
 func main() {
-	/*var data fh.RestaurantProfiles
+	/*var data model.RestaurantProfiles
 	for i := 0; i < 2; i++ {
 		v := strconv.Itoa(i)
-		data.Profiles = append(data.Profiles, fh.RestaurantProfile{
+		data.Profiles = append(data.Profiles, model.RestaurantProfile{
 			Email:    "admin" + v + "@gmail.com",
 			Password: "1234",
 			ID:       i,
@@ -25,7 +19,7 @@ func main() {
 			Address:  "bla bla bla",
 			Open:     11,
 			Close:    23,
-			Dishes: []fh.Dish{
+			Dishes: []model.Dish{
 				{
 					Name:      "ham",
 					Price:     10,
@@ -34,27 +28,21 @@ func main() {
 			},
 			FixedCost:   0,
 			FixedMinute: 0,
-			Orders: []fh.Order{
+			Orders: []model.Order{
 				{
 					OrderID:      0,
 					CustomerID:   0,
 					RestaurantID: i,
-					DisheInfos: []fh.DishInfo{
-						{
-							Name:     "ham",
-							Price:    10,
-							Quantity: 1,
-						},
-					},
-					Price:     10,
-					Status: 0
+					DisheInfos:   []model.DishInfo{{Name: "ham", Price: 10, Quantity: 1}},
+					Price:        10,
+					Status:       1,
 				},
 			},
-			Reviews: []fh.Review{},
+			Reviews: []model.Review{},
 		})
 	}
 	file, _ := json.MarshalIndent(data, "", " ")
-	_ = ioutil.WriteFile("resources/profiles.json", file, 0644)*/
+	_ = ioutil.WriteFile("model/profiles.json", file, 0644)*/
 
 	/*jsonFile, err := os.Open("profiles.json")
 	if err != nil {
@@ -78,22 +66,22 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	//e.Static("/", "../src")
-	e.POST("/loginadmin", rst.LoginAdmin)
-	e.POST("/signupadmin", rst.SignUpAdmin)
+	e.POST("/loginadmin", cont.LoginAdmin)
+	e.POST("/signupadmin", cont.SignUpAdmin)
 
-	e.POST("/getmenu", rst.GetMenu)
-	e.POST("/getorders", rst.GetOrders)
-	e.POST("/getreviews", rst.GetReviews)
-	e.POST("/getinfo", rst.GetInfo)
+	e.POST("/getmenu", cont.GetMenu)
+	e.POST("/getorders", cont.GetOrders)
+	e.POST("/getreviews", cont.GetReviews)
+	e.POST("/getinfo", cont.GetInfo)
 
-	e.POST("/adddish", rst.AddDish)
-	e.POST("/deletedish", rst.DeleteDish)
-	e.POST("/updatedishpa", rst.UpdateDishPA)
-	e.POST("/updatedishname", rst.UpdateDishName)
+	e.POST("/adddish", cont.AddDish)
+	e.POST("/deletedish", cont.DeleteDish)
+	e.POST("/updatedishpa", cont.UpdateDishPA)
+	e.POST("/updatedishname", cont.UpdateDishName)
 
-	e.POST("/changeorderstatus", rst.ChangeOrderStatus)
-	e.POST("/postreply", rst.PostReply)
-	e.POST("/updateinfo", rst.UpdateInfo)
+	e.POST("/changeorderstatus", cont.ChangeOrderStatus)
+	e.POST("/postreply", cont.PostReply)
+	e.POST("/updateinfo", cont.UpdateInfo)
 
 	e.Logger.Fatal(e.Start(":1323"))
 
@@ -101,7 +89,7 @@ func main() {
 
 /*
  	data := Employee{
-        FirstName: "Mark",
+        FicontName: "Mark",
         LastName:  "Jones",
         Email:     "mark@gmail.com",
         Age:       25,

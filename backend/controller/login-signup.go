@@ -1,11 +1,11 @@
-package restaurant
+package controller
 
 import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 )
 
 type ResponseMessage struct {
@@ -30,7 +30,7 @@ type SignupInfo struct {
 	FixedMinute int    `json:"fixed_minute"`
 }
 
-func equalsRestaurant(p1 fh.RestaurantProfile, p2 SignupInfo) bool {
+func equalsRestaurant(p1 model.RestaurantProfile, p2 SignupInfo) bool {
 	return (p1.Name == p2.Name && p1.District == p2.District && p1.Address == p2.Address)
 }
 
@@ -40,7 +40,7 @@ func LoginAdmin(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == loginInfo.Email && profiles.Profiles[i].Password == loginInfo.Password {
 			return c.JSON(http.StatusOK, RestID{
@@ -60,7 +60,7 @@ func SignUpAdmin(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == signupInfo.Email {
@@ -77,7 +77,7 @@ func SignUpAdmin(c echo.Context) error {
 		}
 	}
 
-	newProfile := fh.RestaurantProfile{
+	newProfile := model.RestaurantProfile{
 		Email:       signupInfo.Email,
 		Password:    signupInfo.Password,
 		ID:          len(profiles.Profiles),
@@ -86,14 +86,14 @@ func SignUpAdmin(c echo.Context) error {
 		Address:     signupInfo.Address,
 		Open:        signupInfo.Open,
 		Close:       signupInfo.Close,
-		Dishes:      []fh.Dish{},
+		Dishes:      []model.Dish{},
 		FixedCost:   signupInfo.FixedCost,
 		FixedMinute: signupInfo.FixedMinute,
-		Orders:      []fh.Order{},
-		Reviews:     []fh.Review{},
+		Orders:      []model.Order{},
+		Reviews:     []model.Review{},
 	}
 	profiles.Profiles = append(profiles.Profiles, newProfile)
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, RestID{
 		RID: newProfile.ID,
 	})

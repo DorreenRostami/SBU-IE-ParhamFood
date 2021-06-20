@@ -1,9 +1,9 @@
-package restaurant
+package controller
 
 import (
 	"net/http"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,15 +24,15 @@ type RestID struct {
 }
 
 type Menu struct {
-	Dishes []fh.Dish `json:"dishes"`
+	Dishes []model.Dish `json:"dishe"`
 }
 
 type Orders struct {
-	Orders []fh.Order `json:"orders"`
+	Orders []model.Order `json:"order"`
 }
 
 type Reviews struct {
-	Reviews []fh.Review `json:"reviews"`
+	Reviews []model.Review `json:"review"`
 }
 
 func GetMenu(c echo.Context) error {
@@ -50,8 +50,8 @@ func GetOrders(c echo.Context) error {
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := fh.GetProfilesFromFile()
-	var orders []fh.Order
+	profiles := model.GetProfilesFromFile()
+	var orders []model.Order
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {
 			orders = profiles.Profiles[i].Orders
@@ -68,8 +68,8 @@ func GetReviews(c echo.Context) error {
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := fh.GetProfilesFromFile()
-	var rev []fh.Review
+	profiles := model.GetProfilesFromFile()
+	var rev []model.Review
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {
 			rev = profiles.Profiles[i].Reviews
@@ -86,7 +86,7 @@ func GetInfo(c echo.Context) error {
 	if err := c.Bind(&id); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	var info RestInfo
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == id.RID {

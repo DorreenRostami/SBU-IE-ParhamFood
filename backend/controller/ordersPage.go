@@ -1,19 +1,19 @@
-package restaurant
+package controller
 
 import (
 	"net/http"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 	"github.com/labstack/echo/v4"
 )
 
 func ChangeOrderStatus(c echo.Context) error { //needs restaurant_id, order_id
-	var order fh.Order
+	var order model.Order
 	if err := c.Bind(&order); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == order.RestaurantID {
 			orders := profiles.Profiles[i].Orders
@@ -39,6 +39,6 @@ func ChangeOrderStatus(c echo.Context) error { //needs restaurant_id, order_id
 			})
 		}
 	}
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, order)
 }

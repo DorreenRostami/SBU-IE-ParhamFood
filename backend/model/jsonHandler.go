@@ -1,4 +1,4 @@
-package filehandler
+package model
 
 import (
 	"encoding/json"
@@ -58,7 +58,7 @@ type Review struct {
 }
 
 func GetProfilesFromFile() RestaurantProfiles {
-	jsonFile, err := os.Open("resources/profiles.json")
+	jsonFile, err := os.Open("model/profiles.json")
 	if err != nil {
 		log.Println(err)
 	}
@@ -71,5 +71,5 @@ func GetProfilesFromFile() RestaurantProfiles {
 
 func UpdateProfileFile(profiles RestaurantProfiles) {
 	file, _ := json.MarshalIndent(profiles, "", " ")
-	_ = ioutil.WriteFile("resources/profiles.json", file, 0644)
+	_ = ioutil.WriteFile("model/profiles.json", file, 0644)
 }

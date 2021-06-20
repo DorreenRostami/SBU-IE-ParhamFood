@@ -1,19 +1,19 @@
-package restaurant
+package controller
 
 import (
 	"net/http"
 
-	fh "github.com/DorreenRostami/IE_ParhamFood/filehandler"
+	model "github.com/DorreenRostami/IE_ParhamFood/model"
 	"github.com/labstack/echo/v4"
 )
 
 func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
-	var rev fh.Review
+	var rev model.Review
 	if err := c.Bind(&rev); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	profiles := fh.GetProfilesFromFile()
+	profiles := model.GetProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == rev.RestaurantID {
 			reviews := profiles.Profiles[i].Reviews
@@ -39,6 +39,6 @@ func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 			})
 		}
 	}
-	fh.UpdateProfileFile(profiles)
+	model.UpdateProfileFile(profiles)
 	return c.JSON(http.StatusOK, rev)
 }
