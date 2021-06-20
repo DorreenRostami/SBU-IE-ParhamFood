@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+type ResponseMessage struct {
+	StatusCode int    `json:"status_code"`
+	Message    string `json:"message"`
+}
+
 type RestaurantProfiles struct {
 	Profiles []RestaurantProfile `json:"profiles"`
 }

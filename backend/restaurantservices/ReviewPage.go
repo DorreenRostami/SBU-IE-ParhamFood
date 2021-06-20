@@ -1,4 +1,4 @@
-package controller
+package restaurantservices
 
 import (
 	"net/http"
@@ -24,7 +24,7 @@ func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 					break
 				}
 				if j == len(reviews)-1 {
-					return c.JSON(http.StatusConflict, ResponseMessage{
+					return c.JSON(http.StatusConflict, model.ResponseMessage{
 						StatusCode: http.StatusBadRequest,
 						Message:    "Wrong review ID.",
 					})
@@ -33,7 +33,7 @@ func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 			break
 		}
 		if i == len(profiles.Profiles)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusBadRequest,
 				Message:    "Wrong restaurant ID.",
 			})

@@ -1,4 +1,4 @@
-package controller
+package restaurantservices
 
 import (
 	"net/http"
@@ -7,11 +7,6 @@ import (
 
 	model "github.com/DorreenRostami/IE_ParhamFood/model"
 )
-
-type ResponseMessage struct {
-	StatusCode int    `json:"status_code"`
-	Message    string `json:"message"`
-}
 
 type AdminLoginInfo struct {
 	Email    string `json:"email"`
@@ -48,7 +43,7 @@ func LoginAdmin(c echo.Context) error {
 			})
 		}
 	}
-	return c.JSON(http.StatusUnauthorized, ResponseMessage{
+	return c.JSON(http.StatusUnauthorized, model.ResponseMessage{
 		StatusCode: http.StatusUnauthorized,
 		Message:    "Wrong username or password.",
 	})
@@ -64,13 +59,13 @@ func SignUpAdmin(c echo.Context) error {
 
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Email == signupInfo.Email {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "This email has already been used.",
 			})
 		}
 		if equalsRestaurant(profiles.Profiles[i], signupInfo) {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "This restaurant already exists.",
 			})

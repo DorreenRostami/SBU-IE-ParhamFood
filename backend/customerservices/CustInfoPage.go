@@ -1,4 +1,4 @@
-package controller
+package customerservices
 
 import (
 	"net/http"
@@ -30,7 +30,7 @@ func UpdateCustomerInfo(c echo.Context) error { //needs every info field
 					continue
 				}
 				if profiles.Profiles[j].Mobile == info.Mobile {
-					return c.JSON(http.StatusConflict, ResponseMessage{
+					return c.JSON(http.StatusConflict, model.ResponseMessage{
 						StatusCode: http.StatusBadRequest,
 						Message:    "This mobile number has already been used.",
 					})
@@ -48,7 +48,7 @@ func UpdateCustomerInfo(c echo.Context) error { //needs every info field
 			break
 		}
 		if i == len(profiles.Profiles)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusBadRequest,
 				Message:    "Wrong customer ID.",
 			})

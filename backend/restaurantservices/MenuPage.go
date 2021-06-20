@@ -1,4 +1,4 @@
-package controller
+package restaurantservices
 
 import (
 	"fmt"
@@ -51,7 +51,7 @@ func AddDish(c echo.Context) error {
 	dishes := getDishes(dish.RestaurantID)
 	for i := 0; i < len(dishes); i++ {
 		if dishes[i].Name == dish.Name {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "A dish with this name already exists.",
 			})
@@ -88,7 +88,7 @@ func DeleteDish(c echo.Context) error {
 			break
 		}
 		if i == len(dishes)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusBadRequest,
 				Message:    "A dish with this name doesn't exist.",
 			})
@@ -116,7 +116,7 @@ func UpdateDishPA(c echo.Context) error { //update dish price or availability
 			break
 		}
 		if i == len(dishes)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusBadRequest,
 				Message:    "A dish with this name doesn't exist.",
 			})
@@ -141,7 +141,7 @@ func UpdateDishName(c echo.Context) error {
 	dishes := getDishes(dish.RestaurantID)
 	for i := 0; i < len(dishes); i++ {
 		if dishes[i].Name == dish.NewName {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "A dish with this name already exists.",
 			})
@@ -152,7 +152,7 @@ func UpdateDishName(c echo.Context) error {
 			break
 		}
 		if i == len(dishes)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "A dish with this name doesn't exist.",
 			})

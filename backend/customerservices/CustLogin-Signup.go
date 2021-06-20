@@ -1,4 +1,4 @@
-package controller
+package customerservices
 
 import (
 	"net/http"
@@ -42,7 +42,7 @@ func LoginCustomer(c echo.Context) error {
 			})
 		}
 	}
-	return c.JSON(http.StatusUnauthorized, ResponseMessage{
+	return c.JSON(http.StatusUnauthorized, model.ResponseMessage{
 		StatusCode: http.StatusUnauthorized,
 		Message:    "Wrong username or password.",
 	})
@@ -58,7 +58,7 @@ func SignUpCustomer(c echo.Context) error {
 
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].Mobile == signupInfo.Mobile {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusConflict,
 				Message:    "This mobile number has already been used.",
 			})

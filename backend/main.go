@@ -1,7 +1,8 @@
 package main
 
 import (
-	cont "github.com/DorreenRostami/IE_ParhamFood/controller"
+	rst "github.com/DorreenRostami/IE_ParhamFood/restaurantservices"
+	cst "github.com/DorreenRostami/IE_ParhamFood/customerservices"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -82,32 +83,32 @@ func main() {
 	e.Use(middleware.Recover())
 	//e.Static("/", "../src")
 	
-	e.POST("/loginadmin", cont.LoginAdmin)
-	e.POST("/signupadmin", cont.SignUpAdmin)
+	e.POST("/loginadmin", rst.LoginAdmin)
+	e.POST("/signupadmin", rst.SignUpAdmin)
 
-	e.POST("/getmenu", cont.GetMenu)
-	e.POST("/getorders", cont.GetOrders)
-	e.POST("/getreviews", cont.GetReviews)
-	e.POST("/getrestaurantinfo", cont.GetRestaurantInfo)
+	e.POST("/getmenu", rst.GetMenu)
+	e.POST("/getorders", rst.GetOrders)
+	e.POST("/getreviews", rst.GetReviews)
+	e.POST("/getrestaurantinfo", rst.GetRestaurantInfo)
 
-	e.POST("/adddish", cont.AddDish)
-	e.POST("/deletedish", cont.DeleteDish)
-	e.POST("/updatedishpa", cont.UpdateDishPA)
-	e.POST("/updatedishname", cont.UpdateDishName)
+	e.POST("/adddish", rst.AddDish)
+	e.POST("/deletedish", rst.DeleteDish)
+	e.POST("/updatedishpa", rst.UpdateDishPA)
+	e.POST("/updatedishname", rst.UpdateDishName)
 
-	e.POST("/changeorderstatus", cont.ChangeOrderStatus)
-	e.POST("/postreply", cont.PostReply)
-	e.POST("/updaterestaurantinfo", cont.UpdateRestaurantInfo)
+	e.POST("/changeorderstatus", rst.ChangeOrderStatus)
+	e.POST("/postreply", rst.PostReply)
+	e.POST("/updaterestaurantinfo", rst.UpdateRestaurantInfo)
 
 	// ----------------------------------------------------------
 
-	e.POST("/logincustomer", cont.LoginCustomer)
-	e.POST("/signupcustomer", cont.SignUpCustomer)
+	e.POST("/logincustomer", cst.LoginCustomer)
+	e.POST("/signupcustomer", cst.SignUpCustomer)
 
-	e.POST("/getcustomerinfo", cont.GetCustomerInfo)
-	e.GET("/homepage", cont.GetAllRestaurants)
+	e.POST("/getcustomerinfo", cst.GetCustomerInfo)
+	e.GET("/homepage", cst.GetAllRestaurants)
 
-	e.POST("/updatecustomerinfo", cont.UpdateCustomerInfo)
+	e.POST("/updatecustomerinfo", cst.UpdateCustomerInfo)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

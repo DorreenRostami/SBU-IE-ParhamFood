@@ -1,4 +1,4 @@
-package controller
+package restaurantservices
 
 import (
 	"net/http"
@@ -30,13 +30,13 @@ func UpdateRestaurantInfo(c echo.Context) error { //needs every info field
 					continue
 				}
 				if profiles.Profiles[j].Email == info.RestInfo.Email {
-					return c.JSON(http.StatusConflict, ResponseMessage{
+					return c.JSON(http.StatusConflict, model.ResponseMessage{
 						StatusCode: http.StatusBadRequest,
 						Message:    "This email has already been used.",
 					})
 				}
 				if restaurantExists(profiles.Profiles[j], info.RestInfo) {
-					return c.JSON(http.StatusConflict, ResponseMessage{
+					return c.JSON(http.StatusConflict, model.ResponseMessage{
 						StatusCode: http.StatusBadRequest,
 						Message:    "This restaurant already exists.",
 					})
@@ -60,7 +60,7 @@ func UpdateRestaurantInfo(c echo.Context) error { //needs every info field
 			break
 		}
 		if i == len(profiles.Profiles)-1 {
-			return c.JSON(http.StatusConflict, ResponseMessage{
+			return c.JSON(http.StatusConflict, model.ResponseMessage{
 				StatusCode: http.StatusBadRequest,
 				Message:    "Wrong restaurant ID.",
 			})
