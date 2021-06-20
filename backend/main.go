@@ -83,6 +83,8 @@ func main() {
 	e.POST("/postreply", cont.PostReply)
 	e.POST("/updateinfo", cont.UpdateInfo)
 
+	e.GET("/getallrestaurants", cont.GetAllRestaurants)
+
 	e.Logger.Fatal(e.Start(":1323"))
 
 }
