@@ -73,7 +73,7 @@ func SignUpCustomer(c echo.Context) error {
 	newProfile := model.CustomerProfile{
 		Mobile:   signupInfo.Mobile,
 		Password: signupInfo.Password,
-		ID:       len(profiles.Profiles) + 1,
+		ID:       len(profiles.Profiles),
 		Name:     signupInfo.Name,
 		District: signupInfo.District,
 		Address:  signupInfo.Address,

@@ -8,27 +8,6 @@ import (
 )
 
 func main() {
-	/*var data model.RestaurantProfiles
-	for i := 0; i < 2; i++ {
-		v := strconv.Itoa(i)
-		data.Profiles = append(data.Profiles, model.RestaurantProfile{
-			Email:       "admin" + v + "@gmail.com",
-			Password:    "1234",
-			ID:          i,
-			Name:        "sib" + v,
-			District:    "blaa",
-			Address:     "bla bla bla",
-			Open:        11,
-			Close:       23,
-			Dishes:      []model.Dish{{Name: "ham", Price: 10, Available: true}},
-			FixedCost:   10,
-			FixedMinute: 30,
-			Reviews:     []model.Review{},
-		})
-	}
-	file, _ := json.MarshalIndent(data, "", " ")
-	_ = ioutil.WriteFile("model/RestaurantProfiles.json", file, 0644)*/
-
 	/*var ords model.Orders
 	ords.Orders = append(ords.Orders, model.Order{
 		OrderID:      0,
@@ -46,21 +25,6 @@ func main() {
 	})
 	fileor, _ := json.MarshalIndent(ords, "", " ")
 	_ = ioutil.WriteFile("model/Orders.json", fileor, 0644)*/
-
-	/*var data model.CustomerProfiles
-	for i := 0; i < 1; i++ {
-		data.Profiles = append(data.Profiles, model.CustomerProfile{
-			Mobile:   "09121234567",
-			Password: "1234",
-			ID:       i,
-			Name:     "ali",
-			District: "blaa",
-			Address:  "bla bla",
-			Balance:  1000000,
-		})
-	}
-	file, _ := json.MarshalIndent(data, "", " ")
-	_ = ioutil.WriteFile("model/CustomerProfiles.json", file, 0644)*/
 
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -103,7 +67,11 @@ func main() {
 
 	e.POST("/restaurantmenu", cst.GetRestaurantMenu)
 	e.POST("/restaurantreviews", cst.GetRestaurantReviews)
+
 	e.POST("/postreview", cst.PostReview)
+
+	e.POST("/getcustomerorders", cst.GetOrders)
+
 	e.POST("/completeorder", cst.CompleteOrder)
 	e.POST("/order/:number", cst.GetOrderStatus)
 
