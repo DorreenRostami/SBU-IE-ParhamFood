@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"time"
 )
 
 type ResponseMessage struct {
@@ -54,6 +55,7 @@ type Order struct {
 	DisheInfos   []DishInfo `json:"dishes"`
 	Price        int        `json:"price"`
 	Status       int        `json:"status"`
+	TimeOfOrder  time.Time  `json:"time_of_order"`
 }
 
 type Review struct {

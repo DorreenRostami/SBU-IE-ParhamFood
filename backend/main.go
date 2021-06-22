@@ -39,10 +39,10 @@ func main() {
 				Name:     "ham",
 				Price:    10,
 				Quantity: 2,
-			},
-		},
-		Price:  20,
-		Status: 0,
+			}},
+		Price:       20,
+		Status:      0,
+		TimeOfOrder: time.Now(),
 	})
 	fileor, _ := json.MarshalIndent(ords, "", " ")
 	_ = ioutil.WriteFile("model/Orders.json", fileor, 0644)*/
@@ -105,6 +105,7 @@ func main() {
 	e.POST("/restaurantreviews", cst.GetRestaurantReviews)
 	e.POST("/postreview", cst.PostReview)
 	e.POST("/completeorder", cst.CompleteOrder)
+	e.POST("/order/:number", cst.GetOrderStatus)
 
 	e.Logger.Fatal(e.Start(":1323"))
 
