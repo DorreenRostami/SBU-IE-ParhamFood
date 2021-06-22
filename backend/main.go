@@ -1,8 +1,8 @@
 package main
 
 import (
-	rst "github.com/DorreenRostami/IE_ParhamFood/restaurantservices"
 	cst "github.com/DorreenRostami/IE_ParhamFood/customerservices"
+	rst "github.com/DorreenRostami/IE_ParhamFood/restaurantservices"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -82,7 +82,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	//e.Static("/", "../src")
-	
+
 	e.POST("/loginadmin", rst.LoginAdmin)
 	e.POST("/signupadmin", rst.SignUpAdmin)
 
@@ -109,6 +109,13 @@ func main() {
 	e.GET("/homepage", cst.GetAllRestaurants)
 
 	e.POST("/updatecustomerinfo", cst.UpdateCustomerInfo)
+	e.POST("/homepage/food", cst.GetRestaurantsByFood)
+	e.POST("/homepage/name", cst.GetRestaurantsByName)
+	e.POST("/homepage/district", cst.GetRestaurantsByDistrict)
+
+	e.POST("/restaurantmenu", cst.GetRestaurantMenu)
+	e.POST("/restaurantreviews", cst.GetRestaurantMenu)
+	e.POST("/postreview", cst.PostReview)
 
 	e.Logger.Fatal(e.Start(":1323"))
 
