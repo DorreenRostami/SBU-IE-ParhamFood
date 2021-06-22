@@ -32,6 +32,12 @@ func GetRestaurantMenu(c echo.Context) error {
 	profiles := model.GetRestaurantProfilesFromFile()
 	for i := 0; i < len(profiles.Profiles); i++ {
 		if profiles.Profiles[i].ID == req.RID {
+			var dishes []model.Dish
+			for j := 0; j < len(profiles.Profiles[i].Dishes); j++ {
+				if profiles.Profiles[i].Dishes[j].Available {
+					dishes = append(dishes, profiles.Profiles[i].Dishes[j])
+				}
+			}
 			return c.JSON(http.StatusOK, RestMenuInfo{
 				RID:         profiles.Profiles[i].ID,
 				Name:        profiles.Profiles[i].Name,
@@ -39,7 +45,7 @@ func GetRestaurantMenu(c echo.Context) error {
 				Address:     profiles.Profiles[i].Address,
 				Open:        profiles.Profiles[i].Open,
 				Close:       profiles.Profiles[i].Close,
-				Dishes:      profiles.Profiles[i].Dishes,
+				Dishes:      dishes,
 				FixedCost:   profiles.Profiles[i].FixedCost,
 				FixedMinute: profiles.Profiles[i].FixedMinute,
 			})
