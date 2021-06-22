@@ -12,52 +12,40 @@ func main() {
 	for i := 0; i < 2; i++ {
 		v := strconv.Itoa(i)
 		data.Profiles = append(data.Profiles, model.RestaurantProfile{
-			Email:    "admin" + v + "@gmail.com",
-			Password: "1234",
-			ID:       i,
-			Name:     "sib" + v,
-			District: "blaa",
-			Address:  "bla bla bla",
-			Open:     11,
-			Close:    23,
-			Dishes: []model.Dish{
-				{
-					Name:      "ham",
-					Price:     10,
-					Available: true,
-				},
-			},
-			FixedCost:   0,
-			FixedMinute: 0,
-			Orders: []model.Order{
-				{
-					OrderID:      0,
-					CustomerID:   0,
-					RestaurantID: i,
-					DisheInfos:   []model.DishInfo{{Name: "ham", Price: 10, Quantity: 1}},
-					Price:        10,
-					Status:       1,
-				},
-			},
-			Reviews: []model.Review{},
+			Email:       "admin" + v + "@gmail.com",
+			Password:    "1234",
+			ID:          i,
+			Name:        "sib" + v,
+			District:    "blaa",
+			Address:     "bla bla bla",
+			Open:        11,
+			Close:       23,
+			Dishes:      []model.Dish{{Name: "ham", Price: 10, Available: true}},
+			FixedCost:   10,
+			FixedMinute: 30,
+			Reviews:     []model.Review{},
 		})
 	}
 	file, _ := json.MarshalIndent(data, "", " ")
-	_ = ioutil.WriteFile("model/profiles.json", file, 0644)*/
+	_ = ioutil.WriteFile("model/RestaurantProfiles.json", file, 0644)*/
 
-	/*jsonFile, err := os.Open("profiles.json")
-	if err != nil {
-		log.Println(err)
-	}
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	defer jsonFile.Close()
-	var profiles Profiles
-	json.Unmarshal(byteValue, &profiles)
-	for i := 0; i < len(profiles.Profiles); i++ {
-		fmt.Println("email: " + profiles.Profiles[i].Email)
-		fmt.Println("password: " + profiles.Profiles[i].Password)
-		fmt.Println("restaurant name: " + profiles.Profiles[i].Name)
-	}*/
+	/*var ords model.Orders
+	ords.Orders = append(ords.Orders, model.Order{
+		OrderID:      0,
+		CustomerID:   0,
+		RestaurantID: 0,
+		DisheInfos: []model.DishInfo{
+			model.DishInfo{
+				Name:     "ham",
+				Price:    10,
+				Quantity: 2,
+			},
+		},
+		Price:  20,
+		Status: 0,
+	})
+	fileor, _ := json.MarshalIndent(ords, "", " ")
+	_ = ioutil.WriteFile("model/Orders.json", fileor, 0644)*/
 
 	/*var data model.CustomerProfiles
 	for i := 0; i < 1; i++ {
@@ -106,16 +94,17 @@ func main() {
 	e.POST("/signupcustomer", cst.SignUpCustomer)
 
 	e.POST("/getcustomerinfo", cst.GetCustomerInfo)
-	e.GET("/homepage", cst.GetAllRestaurants)
-
 	e.POST("/updatecustomerinfo", cst.UpdateCustomerInfo)
-	e.POST("/homepage/food", cst.GetRestaurantsByFood)
-	e.POST("/homepage/name", cst.GetRestaurantsByName)
-	e.POST("/homepage/district", cst.GetRestaurantsByDistrict)
+
+	e.GET("/homepage", cst.GetAllRestaurants)
+	e.POST("/searchbyfood", cst.GetRestaurantsByFood)
+	e.POST("/searchbyname", cst.GetRestaurantsByName)
+	e.POST("/searchbydistrict", cst.GetRestaurantsByDistrict)
 
 	e.POST("/restaurantmenu", cst.GetRestaurantMenu)
-	e.POST("/restaurantreviews", cst.GetRestaurantMenu)
+	e.POST("/restaurantreviews", cst.GetRestaurantReviews)
 	e.POST("/postreview", cst.PostReview)
+	e.POST("/completeorder", cst.CompleteOrder)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

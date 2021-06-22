@@ -28,8 +28,7 @@ type RestaurantProfile struct {
 	Dishes      []Dish   `json:"dishes"`
 	FixedCost   int      `json:"fixed_cost"`
 	FixedMinute int      `json:"fixed_minute"`
-	Orders      []Order  `json:"orders"`
-	Reviews     []Review `json:"review"`
+	Reviews     []Review `json:"reviews"`
 }
 
 type Dish struct {
@@ -42,6 +41,10 @@ type DishInfo struct {
 	Name     string `json:"name"`
 	Price    int    `json:"price"`
 	Quantity int    `json:"quantity"`
+}
+
+type Orders struct {
+	Orders []Order `json:"orders"`
 }
 
 type Order struct {
@@ -108,4 +111,21 @@ func GetCustomerProfilesFromFile() CustomerProfiles {
 func UpdateCustomerProfileFile(profiles CustomerProfiles) {
 	file, _ := json.MarshalIndent(profiles, "", " ")
 	_ = ioutil.WriteFile("model/CustomerProfiles.json", file, 0644)
+}
+
+func GetOrdersFromFile() Orders {
+	jsonFile, err := os.Open("model/Orders.json")
+	if err != nil {
+		log.Println(err)
+	}
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	defer jsonFile.Close()
+	var orders Orders
+	json.Unmarshal(byteValue, &orders)
+	return orders
+}
+
+func UpdateOrdersFile(orders Orders) {
+	file, _ := json.MarshalIndent(orders, "", " ")
+	_ = ioutil.WriteFile("model/Orders.json", file, 0644)
 }

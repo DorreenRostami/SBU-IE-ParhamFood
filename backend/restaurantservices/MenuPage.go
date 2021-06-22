@@ -8,6 +8,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type RestID struct {
+	RID int `json:"restaurant_id"`
+}
+
+type Menu struct {
+	Dishes []model.Dish `json:"dishes"`
+}
+
 type DishReq struct {
 	RestaurantID int    `json:"restaurant_id"`
 	Name         string `json:"name"`
@@ -19,6 +27,16 @@ type DishNameReq struct {
 	RestaurantID int    `json:"restaurant_id"`
 	OldName      string `json:"old_name"`
 	NewName      string `json:"new_name"`
+}
+
+func GetMenu(c echo.Context) error {
+	var id RestID
+	if err := c.Bind(&id); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, Menu{
+		Dishes: getDishes(id.RID),
+	})
 }
 
 func getDishes(id int) []model.Dish {

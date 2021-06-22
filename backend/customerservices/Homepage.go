@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	model "github.com/DorreenRostami/IE_ParhamFood/model"
-	rst "github.com/DorreenRostami/IE_ParhamFood/restaurantservices"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,6 +24,31 @@ type RestMenuInfo struct {
 	Dishes      []model.Dish `json:"dishes"`
 	FixedCost   int          `json:"fixed_cost"`
 	FixedMinute int          `json:"fixed_minute"`
+}
+
+type RestHomePageInfo struct {
+	RID      int    `json:"restaurant_id"`
+	Name     string `json:"name"`
+	District string `json:"district"`
+	Address  string `json:"address"`
+}
+
+type RestHomePageInfos struct {
+	AllRests []RestHomePageInfo `json:"restaurant_homepage_infos"`
+}
+
+func GetAllRestaurants(c echo.Context) error {
+	var allRests RestHomePageInfos
+	profiles := model.GetRestaurantProfilesFromFile()
+	for i := 0; i < len(profiles.Profiles); i++ {
+		allRests.AllRests = append(allRests.AllRests, RestHomePageInfo{
+			RID:      profiles.Profiles[i].ID,
+			Name:     profiles.Profiles[i].Name,
+			District: profiles.Profiles[i].District,
+			Address:  profiles.Profiles[i].Address,
+		})
+	}
+	return c.JSON(http.StatusOK, allRests)
 }
 
 func GetRestaurantsByFood(c echo.Context) error {
@@ -91,31 +116,4 @@ func GetRestaurantsByDistrict(c echo.Context) error {
 		}
 	}
 	return c.JSON(http.StatusOK, rests)
-}
-
-func GetRestaurantMenu(c echo.Context) error {
-	var req rst.RestID
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	var restInfo RestMenuInfo
-	profiles := model.GetRestaurantProfilesFromFile()
-	for i := 0; i < len(profiles.Profiles); i++ {
-		if profiles.Profiles[i].ID == req.RID {
-			restInfo = RestMenuInfo{
-				RID:         profiles.Profiles[i].ID,
-				Name:        profiles.Profiles[i].Name,
-				District:    profiles.Profiles[i].District,
-				Address:     profiles.Profiles[i].Address,
-				Open:        profiles.Profiles[i].Open,
-				Close:       profiles.Profiles[i].Close,
-				Dishes:      profiles.Profiles[i].Dishes,
-				FixedCost:   profiles.Profiles[i].FixedCost,
-				FixedMinute: profiles.Profiles[i].FixedMinute,
-			}
-			break
-		}
-	}
-	return c.JSON(http.StatusOK, restInfo)
 }

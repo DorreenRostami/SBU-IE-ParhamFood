@@ -7,6 +7,28 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type Reviews struct {
+	Reviews []model.Review `json:"reviews"`
+}
+
+func GetReviews(c echo.Context) error {
+	var id RestID
+	if err := c.Bind(&id); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	profiles := model.GetRestaurantProfilesFromFile()
+	var rev []model.Review
+	for i := 0; i < len(profiles.Profiles); i++ {
+		if profiles.Profiles[i].ID == id.RID {
+			rev = profiles.Profiles[i].Reviews
+			break
+		}
+	}
+	return c.JSON(http.StatusOK, Reviews{
+		Reviews: rev,
+	})
+}
+
 func PostReply(c echo.Context) error { //needs restaurant_id, review_id, reply
 	var rev model.Review
 	if err := c.Bind(&rev); err != nil {

@@ -84,7 +84,6 @@ func SignUpAdmin(c echo.Context) error {
 		Dishes:      []model.Dish{},
 		FixedCost:   signupInfo.FixedCost,
 		FixedMinute: signupInfo.FixedMinute,
-		Orders:      []model.Order{},
 		Reviews:     []model.Review{},
 	}
 	profiles.Profiles = append(profiles.Profiles, newProfile)

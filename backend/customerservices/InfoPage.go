@@ -16,6 +16,28 @@ type CustInfoReq struct {
 	Address  string `json:"address"`
 }
 
+func GetCustomerInfo(c echo.Context) error {
+	var info CustomerMainInfo
+	if err := c.Bind(&info); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	profiles := model.GetCustomerProfilesFromFile()
+	var profInfo CustomerSignUpInfo
+	for i := 0; i < len(profiles.Profiles); i++ {
+		if profiles.Profiles[i].ID == info.ID {
+			profInfo = CustomerSignUpInfo{
+				Mobile:   profiles.Profiles[i].Mobile,
+				Password: profiles.Profiles[i].Password,
+				Name:     profiles.Profiles[i].Name,
+				District: profiles.Profiles[i].District,
+				Address:  profiles.Profiles[i].Address,
+			}
+			break
+		}
+	}
+	return c.JSON(http.StatusOK, profInfo)
+}
+
 func UpdateCustomerInfo(c echo.Context) error { //needs every info field
 	var info CustInfoReq
 	if err := c.Bind(&info); err != nil {
